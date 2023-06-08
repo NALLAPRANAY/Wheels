@@ -17,7 +17,8 @@
 
 // Go to the Project Settings (nut icon).
  
-char auth[] = "s2291g1WHa7xVg5Sz8MD1Kx2nJ_BfwpL";
+//char auth[] = "s2291g1WHa7xVg5Sz8MD1Kx2nJ_BfwpL";
+char auth[] = "AiI0iw1zg8kV6IN9lErjEOwyw6yDIySo";
 
 
 
@@ -25,23 +26,22 @@ char auth[] = "s2291g1WHa7xVg5Sz8MD1Kx2nJ_BfwpL";
 
 // Set password to "" for open networks.
 
-char ssid[] = "Redmi8A";
+char ssid[] = "OP";
 
-char pass[] = "srinunalla";
+char pass[] = "98764321";
 
 
 
-int M1PWM = D5; //GPIO14
+int enA = D1; //GPIO1
+int enB = D6; //GPIO12
 
-int M2PWM = D6; //GPIO12
+int in1 = D2;  //GPIO5
 
-int M1P = D1;  //GPIO5
+int in2 = D3;  //GPIO4
 
-int M1N = D2;  //GPIO4
+int in3 = D4;  //GPIO0
 
-int M2P = D3;  //GPIO0
-
-int M2N = D4;  //GPIO2
+int in4 = D5;  //GPIO2
 
 
 
@@ -52,90 +52,136 @@ int pinValue2;
 
 
 BLYNK_WRITE(V2)
-
-
-
 {
+int buttonState = param.asInt();
+  if(buttonState == HIGH){
+    Blynk.virtualWrite(V3,0);
+  Blynk.virtualWrite(V4,0);
+  Blynk.virtualWrite(V5,0);
+  digitalWrite(in1,HIGH);
+  digitalWrite(in2,LOW);
+  digitalWrite(in3,LOW);
+  digitalWrite(in4,HIGH);
+  
 
-
-
-  int pinValue1 = param.asInt(); // assigning incoming value from pin V1 to a variable
-
-
-
-  analogWrite(M1PWM,pinValue1);
-
-
-
-  Blynk.virtualWrite(V1, pinValue1);
-
-
-
-  Serial.print("V1 Slider value is: ");
-
-
-
-  Serial.println(pinValue1);
-
-
-
+}
+else{
+  digitalWrite(in1,LOW);
+  digitalWrite(in2,LOW);
+  digitalWrite(in3,LOW);
+  digitalWrite(in4,LOW);
+  
+  }
 }
 
 
 
 BLYNK_WRITE(V3)
-
-
-
 {
 
+//back
+int buttonState = param.asInt();
+  if(buttonState==HIGH){
+  Blynk.virtualWrite(V2,0);
+  Blynk.virtualWrite(V4,0);
+  Blynk.virtualWrite(V5,0);
+  digitalWrite(in1,LOW);
+  digitalWrite(in2,HIGH);
+  digitalWrite(in3,HIGH);
+  digitalWrite(in4,LOW);
+ 
 
+}
+else{
+  digitalWrite(in1,LOW);
+  digitalWrite(in2,LOW);
+  digitalWrite(in3,LOW);
+  digitalWrite(in4,LOW);
+  
+  }
+}
 
-  int pinValue2 = param.asInt(); // assigning incoming value from pin V2 to a variable
+BLYNK_WRITE(V4)
+{
+//  left
+int buttonState = param.asInt();
+  if(buttonState==HIGH){
+    Blynk.virtualWrite(V2,0);
+  Blynk.virtualWrite(V3,0);
+  Blynk.virtualWrite(V5,0);
+  digitalWrite(in1,HIGH);
+  digitalWrite(in2,LOW);
+  digitalWrite(in3,LOW);
+  digitalWrite(in4,LOW);
 
-
-
-  analogWrite(M2PWM,pinValue2);
-
-
-
-  Blynk.virtualWrite(V2, pinValue2);
-
-
-
-  Serial.print("V2 Slider value is: ");
-
-
-
-  Serial.println(pinValue2);
-
+}
+else{
+  digitalWrite(in1,LOW);
+  digitalWrite(in2,LOW);
+  digitalWrite(in3,LOW);
+  digitalWrite(in4,LOW);
+  
+  }
 
 
 }
+BLYNK_WRITE(V5)
+{
+//  right
+int buttonState = param.asInt();
+  if(buttonState==HIGH){
+  Blynk.virtualWrite(V2,0);
+  Blynk.virtualWrite(V3,0);
+  Blynk.virtualWrite(V4,0);
+  digitalWrite(in1,LOW);
+  digitalWrite(in2,LOW);
+  digitalWrite(in3,LOW);
+  digitalWrite(in4,HIGH);
 
+}
+else{
+  digitalWrite(in1,LOW);
+  digitalWrite(in2,LOW);
+  digitalWrite(in3,LOW);
+  digitalWrite(in4,LOW);
+  }
+}
+BLYNK_WRITE(V6){
+  int buttonState =param.asInt();
+  if(buttonState == HIGH){
+    Blynk.virtualWrite(V2,0);
+    Blynk.virtualWrite(V3,0);
+    Blynk.virtualWrite(V4,0);
+    Blynk.virtualWrite(V5,0);
+     digitalWrite(in1,LOW);
+  digitalWrite(in2,LOW);
+  digitalWrite(in3,LOW);
+  digitalWrite(in4,LOW);
+   Blynk.virtualWrite(V6,0);
+
+    
+    }
+  
+}
 void setup()
 
 {
-
-  pinMode (M1PWM,OUTPUT);
-
-  pinMode (M2PWM,OUTPUT);
-
-  pinMode (M1P,OUTPUT);
-
-  pinMode (M1N,OUTPUT);
-
-  pinMode (M2P,OUTPUT);
-
-  pinMode (M2N,OUTPUT);
-
   // Debug console
+  pinMode(enA, OUTPUT);
+  pinMode(enB, OUTPUT);
+  pinMode(in1, OUTPUT);
+  pinMode(in2, OUTPUT);
+  pinMode(in3, OUTPUT);
+  pinMode(in4, OUTPUT);
 
+  digitalWrite(in1,LOW);
+  digitalWrite(in2,LOW);
+  digitalWrite(in3,LOW);
+  digitalWrite(in4,LOW);
   Serial.begin(9600);
-
-
-
   Blynk.begin(auth, ssid, pass);
+  analogWrite(enA, 255);
+  analogWrite(enB,255);
 
 }
 
